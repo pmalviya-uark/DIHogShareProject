@@ -1,0 +1,107 @@
+<!-- templates/volunteerSignUp.html -->
+<h1 class="title">Volunteer Sign Up</h1>
+<div style="display: flex; align-items: center; margin-bottom: 10px;">
+  <img src="/icons/profile.png" alt="Profile Icon" class="profile-icon" style="width: 100px; height: 100px;">
+  <div>
+    <h2 class="subtitle-volunteer">Welcome Volunteer</h2>
+    <p class="subtitle-text">Join us in making a difference</p>
+  </div>
+</div>
+<form id="volunteer-signup">
+  <div class="form-group">
+    <label for="firstname-input">First Name</label>
+    <input type="text" class="form-control" id="firstname-input" placeholder="Enter your firstname" required>
+  </div>
+
+  <div class="form-group">
+    <label for="lastname-input">Last Name</label>
+    <input type="text" class="form-control" id="lastname-input" placeholder="Enter your lastname">
+  </div>
+
+  <div class="form-group">
+    <label for="email-input">Email Address</label>
+    <input type="email" class="form-control" id="email-input" placeholder="Enter your email address" required>
+  </div>
+
+  <div class="form-group">
+    <label for="password-input">Password</label>
+    <input type="password" class="form-control" id="password-input" placeholder="Enter your password" required>
+  </div>
+
+  <div class="form-group">
+    <label for="confirmpassword-input">Confirm Password</label>
+    <input type="password" class="form-control" id="confirmpassword-input" placeholder="Confirm your password" required>
+  </div>
+
+  <div class="form-group">
+    <label for="phone-input">Phone Number</label>
+    <input type="tel" class="form-control" id="phone-input" placeholder="Enter your phone number" required>
+  </div>
+
+  <button type="submit" class="btn btn-primary" id="signup-button">Sign Up</button>
+</form>
+
+<script>
+  $('#signup-button').click(function(event) {
+    event.preventDefault();
+    console.log('signup');
+
+    // Get user input values
+    const firstName = $('#firstname-input').val();
+    const lastName = $('#lastname-input').val();
+    const email = $('#email-input').val();
+    const password = $('#password-input').val();
+    const confirmPassword = $('#confirmpassword-input').val();
+    const phone = $('#phone-input').val();
+
+    // Basic validation
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return;
+    }
+
+    // Store user data in IndexedDB
+    const request = window.indexedDB.open('volunteerDB', 1);
+
+    request.onerror = function(event) {
+      console.error('Error opening database:', event);
+      alert('Error accessing database.');
+    };
+
+    request.onupgradeneeded = function(event) {
+      const db = event.target.result;
+
+      // Create the "users" object store if it doesn't exist
+      if (!db.objectStoreNames.contains('users')) {
+        db.createObjectStore('users', { keyPath: 'email' }); // Assuming email is unique
+      }
+    };
+
+    request.onsuccess = function(event) {
+      const db = event.target.result;
+      const transaction = db.transaction('users', 'readwrite');
+      const store = transaction.objectStore('users');
+
+      const newUser = { 
+        firstName: firstName, 
+        lastName: lastName, 
+        email: email,  
+        password: password,
+        phone: phone
+      };
+
+      const addRequest = store.add(newUser);
+
+      addRequest.onsuccess = function() {
+        console.log('User data saved successfully.');
+        localStorage.setItem('loggedIn', true); 
+        loadContent('volunteerdashboard'); 
+      };
+
+      addRequest.onerror = function(event) {
+        console.error('Error saving user data:', event);
+        alert('Error saving user data.');
+      };
+    };
+  });
+</script>

@@ -1,0 +1,44 @@
+<!-- templates/home.html -->
+<h1 style="display: flex; justify-content: center; align-items: center">Welcome to Food Recovery</h1>
+<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+    <img src="/icons/logo.png" alt="App Logo" style="width: 150px; height: auto;">
+</div>
+<p style="font-size: 1.5rem; font-weight: bold; text-align: center;">Help Reduce Food Waste</p>
+<p style="text-align: center;">Join us in our mission to recover surplus food and distribute it to those in need.</p>
+<div class="button-container">
+  <button id="create-request" class="btn btn-primary">Create Request</button>
+  <p style="text-align: center;">or</p> 
+  <button id="volunteer-login" class="btn btn-primary">Volunteer Login</button>
+  <p style="text-align: center;">Join our community on <a href="https://www.instagram.com/razorbackfoodrecovery/?hl=en">Instagram</a>!</p> 
+</div>
+
+<script>
+    
+    $(document).ready(function() {
+      // Check if the user is logged in
+      const loggedIn = localStorage.getItem('loggedIn');
+      if (loggedIn === 'true') {
+          // User is logged in
+          $('#volunteer-login').click(function(event) {
+              event.preventDefault(); // Prevent default link behavior
+              loadContent('volunteerdashboard'); // Load volunteer dashboard
+          });
+
+          $('#create-request').click(function(event) {
+              event.preventDefault(); // Prevent default link behavior
+              loadContent('hostrequest'); // Load hostrequest.html
+          });
+      } else {
+          // User is not logged in, show the login button
+          $('#volunteer-login').click(function(event) {
+              event.preventDefault(); // Prevent default link behavior
+              loadContent('volunteerlogin'); // Load volunteerlogin.html
+          });
+
+          $('#create-request').click(function(event) {
+              event.preventDefault(); // Prevent default link behavior
+              loadContent('hostrequest'); // Load hostrequest.html
+          });
+      }
+  });
+</script>

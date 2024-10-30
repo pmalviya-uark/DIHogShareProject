@@ -1,0 +1,189 @@
+<!-- templates/hostrequest.html -->
+<h1 class="title">Create Food Pickup Request</h1>
+<p><a href="path/to/your/instructions.pdf" class="download-link">**View Instructions**</a> on how to Submit Request</p>
+<p class="subtitle-text">Please fill out the form with the necessary details and click 'Submit Request' to complete the process.</p>
+<form id="host-request">
+    <!-- Accordion for grouping similar fields -->
+    <div class="accordion" id="pickupRequestAccordion">
+
+        <!-- Event Details Section -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" required>
+                    Event Details
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#pickupRequestAccordion">
+                <div class="accordion-body">
+                    <label for="eventName" class="form-label">Event Name</label>
+                    <input type="text" id="eventName" placeholder="Enter Event Name" class="form-input" required>
+
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" id="location" placeholder="Enter Location" class="form-input" required>
+
+                    <label for="map" class="form-label">Select Location on Map</label>
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Details Section -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Food Details
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#pickupRequestAccordion">
+                <div class="accordion-body">
+                    <label for="foodType" class="form-label">Food Type</label>
+                    <input type="text" id="foodType" placeholder="Enter Food Type" class="form-input">
+
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="number" id="quantity" placeholder="Enter Quantity" class="form-input">
+                </div>
+            </div>
+        </div>
+
+        <!-- Pickup Type Section -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Pickup Type
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#pickupRequestAccordion">
+                <div class="accordion-body">
+                    <div class="request-type-buttons">
+                        <button type="button" class="btn btn-outline-primary pickup-type" data-type="24-hour">24-hour Pickup</button>
+                        <button type="button" class="btn btn-outline-primary pickup-type" data-type="5-hour">5-hour Pickup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    Contact Information
+                </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#pickupRequestAccordion">
+                <div class="accordion-body">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" placeholder="Enter Email" class="form-input" required>
+                    <div id="emailError" class="error-message"></div>
+
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="1234567890" class="form-input" required pattern="[0-9]{10}">
+                    <div id="phoneError" class="error-message"></div>
+                    <label for="notes" class="form-label">Additional Notes</label>
+                    <textarea id="notes" placeholder="Enter any additional information" class="form-input form-textarea"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary" id="submit-request-button">Submit Request</button>
+</form>
+
+<!-- Ensure jQuery is included -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Handle form submission
+    $('#host-request').on('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Gather form data
+        const eventName = $('#eventName').val();
+        const location = $('#location').val();
+        const foodType = $('#foodType').val();
+        const quantity = $('#quantity').val();
+        const email = $('#email').val();
+        const phone = $('#phone').val();
+        const notes = $('#notes').val();
+
+        // Retrieve the pickup type from the active button
+        const pickupType = $('.pickup-type.active').data('type'); 
+
+        if (!pickupType) {
+            alert('Please select a pickup type.');
+            return; // Ensure a pickup type is selected
+        }
+
+        const createdAt = new Date().toISOString(); // Store the creation date
+
+        // Email validation
+        if (!email.includes('@')) {
+            $('#emailError').text('Please enter a valid email address.');
+            return;
+        } else {
+            $('#emailError').text('');
+        }
+        
+        // Phone number validation
+        if (phone.length !== 10 || !/^[0-9]+$/.test(phone)) {
+            $('#phoneError').text('Please enter a valid 10-digit phone number.');
+            return; // Stop form submission
+        } else {
+            $('#phoneError').text(''); // Clear error message if valid
+        }
+        
+
+        // IndexedDB setup
+        const request = window.indexedDB.open('hostRequestDB', 1);
+
+        request.onerror = function(event) {
+            console.error('Error opening database:', event);
+            alert('Error accessing database.');
+        };
+
+        request.onupgradeneeded = function(event) {
+            const db = event.target.result;
+            // Create the "requests" object store if it doesn't exist
+            if (!db.objectStoreNames.contains('requests')) {
+                db.createObjectStore('requests', { keyPath: 'id', autoIncrement: true });
+            }
+        };
+
+        request.onsuccess = function(event) {
+            const db = event.target.result;
+            const transaction = db.transaction('requests', 'readwrite');
+            const store = transaction.objectStore('requests');
+
+            const newRequest = {
+                eventName: eventName,
+                location: location,
+                foodType: foodType,
+                quantity: quantity,
+                pickupType: pickupType,
+                email: email,
+                phone: phone,
+                notes: notes,
+                createdAt: createdAt
+            };
+
+            const addRequest = store.add(newRequest);
+
+            addRequest.onsuccess = function() {
+                console.log('Request saved successfully.');
+                loadContent('requestsubmitted'); // Navigate to the request submitted page
+            };
+
+            addRequest.onerror = function(event) {
+                console.error('Error saving request:', event);
+                alert('Error saving request.');
+            };
+        };
+    });
+
+    // Logic to set active class on selected pickup type button
+    $('.pickup-type').on('click', function() {
+        $('.pickup-type').removeClass('active'); // Remove active class from all
+        $(this).addClass('active');              // Add active class to clicked
+    });
+});
+</script>
+

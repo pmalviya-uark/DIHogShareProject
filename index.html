@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple responsive web application using HTML, CSS, JavaScript, and jQuery.">
+  <!-- Include manifest.json for PWA configuration -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#007bff">
+
+  <!-- Add icons for PWA (Optional, ensure these paths are correct) -->
+  <link rel="icon" href="./icons/icon-192x192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192x192.png">
+  <title>Simple Web App</title>
+
+  <!-- Light Theme Bootstrap CSS (Default Bootstrap) -->
+  <link id="bootstrap-light" rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <!-- Dark Theme Bootstrap CSS (wind95) - Initially Disabled -->
+  <!-- <link id="bootstrap-dark" rel="stylesheet" href="styles/win95.css" disabled> -->
+  <!-- Dark Theme Bootstrap CSS (wind95) - Initially Disabled -->
+  <!-- <link id="bootstrap-dark" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdb-ui-kit@8.0.0/css/mdb.min.css"
+    disabled> -->
+  <!-- Dark Theme Bootstrap CSS (Vapor from Bootswatch) - Initially Disabled -->
+  <link id="bootstrap-dark" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" disabled>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.0.0/mdb.min.css" rel="stylesheet" /> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS for additional styling -->
+  <link id="theme-style" rel="stylesheet" href="./styles/style.css">
+  <!-- <link id="theme-style" rel="stylesheet" href="./styles/greenBootstrap.css"> -->
+
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand" href="#" id="app-name-link">Food Recovery App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="home.html" id="home-link">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html" id="about-link">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="volunteerdashboard.html" id="volunteer-dashboard-link">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="acceptedrequests.html" id="accepted-request-link">AcceptedRequests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="myaccount.html" id="myaccount-link">Account</a>
+          
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact.html" id="contact-link">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" id="logout-link">Logout</a>
+        </li>
+      </ul>
+      <!-- Theme Switcher Button -->
+      <button id="theme-toggle" class="btn btn-outline-secondary ml-2">Switch to Dark Theme</button>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <div class="container mt-5" id="main-content" style="padding-bottom: 60px; padding-top:40px">
+    <h1>Welcome to the Home Page</h1>
+    <p>Click the navigation links to load different content dynamically without refreshing the page.</p>
+  </div>
+
+
+
+  <!-- Footer -->
+  <footer class="footer mt-auto py-3 bg-light text-center fixed-bottom">
+    <div class="container">
+      <span class="text-muted">© 2024 Food Recovery App</span>
+    </div>
+  </footer>
+
+    <!-- Floating Action Button -->
+    <button id="floating-button" class="btn btn-primary rounded-circle shadow-lg" style="position: fixed; bottom: 60px; right: 20px; z-index: 100;">
+      <i class="fas fa-plus"></i>
+    </button>
+
+      <!-- Modal -->
+  <div class="modal fade" id="floatingModal" tabindex="-1" aria-labelledby="floatingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="floatingModalLabel">You Clicked Me!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>This is the modal content.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include jQuery and Bootstrap JS via CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Include Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+  <!-- Google Maps API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Include Bootstrap CSS and JS for Modals and Alerts -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+  <!-- Include PubSubJS via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pubsub-js/1.9.4/pubsub.min.js"></script>
+  <!-- Include Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Include Font Awesome (CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  
+  <!-- External JavaScript file -->
+  <script src="script.js"></script>
+  <script src="navigation.js"></script>
+</body>
+
+</html>
+
+<script>
+    $(document).ready(function() {
+      $("#floating-button").click(function() {
+        $("#floatingModal").modal('show'); 
+      });
+    });
+    $(document).ready(function () {
+      // ... your existing script for floating button and other things ...
+
+      // Add event listener for the Logout link
+      $('#logout-link').click(function (event) {
+        event.preventDefault(); // Prevent default link behavior
+        localStorage.setItem('loggedIn', false); // Clear login flag
+        loadContent('home'); // Redirect to home.html
+      });
+    });
+</script>

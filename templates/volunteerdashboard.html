@@ -1,0 +1,105 @@
+<!-- templates/volunteerDashboard.html -->
+<h1 class="title">Volunteer Dashboard</h1>
+<h4 class="subtitle">Available Pick-up Requests</h4>
+<div class="dashboard-container">
+    <div class="requests-container" id="requests-container">
+        <!-- Request cards will be dynamically inserted here -->
+    </div>
+</div>
+
+<script>
+   $(document).ready(function() {
+    let loggedIn = localStorage.getItem('loggedIn') || false; // Initialize to false
+
+    if (loggedIn === 'true') {
+        // User is logged in, proceed to load requests
+        loadRequests(); 
+    } else {
+        // User is not logged in, show a modal
+        $(`
+            <div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-labelledby="loginRequiredModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="loginRequiredModalLabel">Login Required</h5>
+                        </div>
+                        <div class="modal-body">
+                            You need to be logged in as a volunteer to view this page. Please log in or sign up.
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-primary" onclick="loadContent('volunteerlogin')">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).appendTo('body'); // Append the modal to the body
+        $('#loginRequiredModal').modal('show'); // Show the modal
+    }
+});
+
+    function loadRequests() {
+        const request = window.indexedDB.open('hostRequestDB', 1);
+
+        request.onerror = function(event) {
+            console.error('Error opening database:', event);
+            alert('Error accessing database.');
+        };
+
+        request.onsuccess = function(event) {
+            const db = event.target.result;
+            const transaction = db.transaction('requests', 'readonly');
+            const store = transaction.objectStore('requests');
+            const getAllRequests = store.getAll();
+
+            getAllRequests.onsuccess = function(event) {
+                const allRequests = event.target.result;
+                const requestsContainer = $('#requests-container');
+                requestsContainer.empty(); // Clear existing content
+
+                allRequests.forEach(function(request) {
+                    const requestCard = $('<div class="request-card"></div>');
+                    requestCard.append(`<img src="path/to/your/map.png" alt="Map" style="margin-bottom: 10px;">`);
+                    requestCard.append(`<p style="font-weight: bold; margin-bottom: 5px;">Time Left: Calculate Time</p>`); // Implement time calculation
+                    requestCard.append(`<label >Event Details :</label>`);
+                    requestCard.append(`<a href="#" class="request-link">${request.eventName}</a>`);
+                    requestCard.append(`<p>${request.pickupType} request</p>`);
+
+                    requestCard.find('.request-link').click(function(event) {
+                        event.preventDefault();
+                        const requestId = request.id; // Assuming 'id' is the auto-increment key in your store
+                        localStorage.setItem('selectedRequestId', requestId); // Store the request ID
+                        // Store the request details in the 'latestRequest' object
+                        const latestRequest = {
+                            eventName: request.eventName,
+                            requestType: request.pickupType,
+                            location: request.location, // Assuming you have a 'location' property
+                            food: request.foodType, // Assuming you have a 'foodType' property
+                            quantity: request.quantity, // Assuming you have a 'quantity' property
+                            notes: request.notes, // Assuming you have a 'notes' property
+                        };
+
+                        // Store the object in localStorage
+                        localStorage.setItem('latestRequest', JSON.stringify(latestRequest));
+                        
+                        ///window.location.href = 'pickuprequestdetails.html';
+                        loadContent('pickuprequestdetails'); // Adjust as necessary
+                    });
+
+                    requestsContainer.append(requestCard);
+                });
+            };
+
+            getAllRequests.onerror = function(event) {
+                console.error('Error retrieving requests:', event);
+                alert('Error retrieving request details.');
+            };
+        };
+    }
+
+    // Load requests when the page is ready
+    $(document).ready(function() {
+        loadRequests();
+    });
+
+</script>

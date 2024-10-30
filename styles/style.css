@@ -1,0 +1,284 @@
+/* styles.css */
+
+body {
+  background-color: #e9e8e9;
+  font-family: Calibri, sans-serif;
+  color: #38342b;
+}
+
+/* Headings and Titles */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #38342b;
+}
+
+/* Text Fields */
+input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+/* Buttons */
+button {
+  background-color: #007bff; /* Primary Blue */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker Blue */
+}
+
+/* Icons */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Apply Specific Styles for Each Template */
+.button-container {
+  display: flex; /* Enable flexbox layout */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center buttons horizontally */
+  
+}
+/* Style the buttons within the button-container */
+.button-container button {
+  background-color: #28a745; /* Green color */
+  /* ... Other button styles ... */
+  margin-bottom: 10px; /* Adjust the value as needed */
+}
+
+/* Add gap between buttons */
+.button-container button + button { /* Target the button after another button */
+  margin-top: 20px; /* Add a margin of 15px to the top */
+}
+/* volunteerlogin.html */
+#login-button, #signup-button, #forgot-password {
+  margin-right: 10px;
+}
+
+/* volunteersignup.html */
+#signup-button {
+  background-color: #28a745; /* Success Green */
+}
+
+
+/* styles.html */
+#apply-styles-button {
+  margin-top: 15px;
+}
+
+/* thankYou.html */
+#back-home-link {
+  margin-top: 15px;
+}
+
+.row .col-md-6 button {
+    display: block;
+    margin: 0 auto; /* Center the buttons horizontally */
+    width: 100%; /* Make buttons full width of their columns */
+  }
+  /* Button Styling */
+
+
+  /* Icon Styling (for profile.png) */
+.profile-icon {
+    width: 50px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+    margin-right: 10px; 
+  }
+     
+   /* Add space between accordion and submit button */
+#submit-request-button,#return-home-button,#cancel-request-button,#savechanges-button,#logout-button,#accept-request-button
+,#take-photo-button,#complete-pickup-button {
+    margin-top: 30px;
+    background-color: #28a745; /* Green color */
+  /* ... Other button styles ... */
+  margin-bottom: 5px; /* Adjust the value as needed */
+}
+#submit-request-button:hover,#return-home-button:hover,#cancel-request-button:hover,#savechanges-button:hover,#logout-button:hover
+,#accept-request-button:hover,#take-photo-button:hover,#complete-pickup-button:hover {
+  background-color: #0056b3; /* Darker Blue */
+}
+      
+/* To change the background color of the accordion header on hover */
+.accordion-button:hover {
+  background-color: #3498db; /* Darker Blue */
+  color: #fff; /* Text color when hovered */
+}
+
+/* To change the background color of the accordion header when it is collapsed */
+.accordion-button:focus,
+.accordion-button:not(.collapsed) {
+  box-shadow: none; /* Removes blue shadow */
+    border-color: transparent; /* Removes the border color */
+    outline: none; /* Removes focus outline */
+ 
+}
+/* Textarea */
+textarea {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  height: 150px; /* Specific height for the textarea */
+}
+/* Styling for request summary sections */
+.summary-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.summary-item img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.summary-item h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.summary-item p {
+  margin: 0;
+  color: #555;
+}
+ /* Notification text styling */
+ .notification {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #666;
+}
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50; /* Dark blue-gray color */
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+/* Subtitle for Welcome Volunteer */
+.subtitle {
+  font-size: 1.5rem;
+  color: #34495e; /* Slightly lighter shade */
+  margin: 0;
+  margin-bottom: 20px;
+}
+.subtitle-volunteer {
+  font-size: 1.5rem;
+  color: #34495e; /* Slightly lighter shade */
+  margin-bottom: 2px;
+}
+
+/* Subtitle Text for Join us in making a difference */
+.subtitle-text {
+  font-size: 1rem;
+  color: #7f8c8d; /* Gray color */
+  font-style: italic;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.toggle-label:before {
+  position: absolute;
+  content: "";
+  height: 20px; /* Adjusted size */
+  width: 20px;  /* Adjusted size */
+  left: 3px;    /* Adjusted to center */
+  bottom: 3px;  /* Adjusted to center */
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-label {
+  background-color: #28a745; /* Green for "Allow" */
+}
+
+input:checked + .toggle-label:before {
+  transform: translateX(26px);
+}
+
+/* Container for the Dashboard */
+.dashboard-container {
+  max-width: 1200px; /* Max width of the container */
+  margin: 0 auto; /* Center the container */
+  padding: 20px; /* Add some padding around */
+  background-color: #fff; /* White background for better contrast */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Responsive styling for flex items */
+@media (max-width: 768px) {
+  .dashboard-container > div {
+    flex-direction: column; /* Stack columns on smaller screens */
+  }
+
+  .dashboard-container div {
+    width: 100%; /* Make items full width */
+    margin-bottom: 20px; /* Space between items */
+  }
+}
+ /* Flex styles for the pick-up requests */
+ .requests-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to next line */
+  justify-content: flex-start; /* Align items to the start */
+  margin-bottom: 20px;
+}
+
+.request-card {
+  flex: 1 1 18%; /* Flex properties to allow for 5 cards per row */
+  max-width: 20%; /* Maximum width for each card */
+  margin: 10px;
+  box-sizing: border-box; /* Ensures padding and border are included in total width */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+

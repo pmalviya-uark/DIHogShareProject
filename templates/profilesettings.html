@@ -1,0 +1,57 @@
+<!-- templates/myAccount.html -->
+<h1 class="title">Profile Settings</h1>
+<div style="display: flex; align-items: center; margin-bottom: 10px;">
+  <img src="/icons/profile.png" alt="Profile Icon" class="profile-icon" style="width: 100px; height: 100px;">
+  <div>
+    <p class="subtitle-volunteer">John Doe</p>
+    <p class="subtitle-text">john.doe@uark.edu</p>
+  </div>
+</div>
+<div>
+  <label for="username">Username</label>
+  <input type="text" id="username" placeholder="Enter your username">
+</div>
+<div>
+  <label for="email">Email</label>
+  <input type="email" id="email" placeholder="Enter your email">
+</div>
+<div>
+  <label for="phone-number">Phone Number</label>
+  <input type="tel" id="phone-number" placeholder="Enter your phone number">
+</div>
+<div>
+  <label for="notification-preferences">Notification Preferences</label>
+  <div class="switch">
+    <input type="checkbox" id="notification-toggle">
+    <label for="notification-toggle" class="toggle-label"></label>
+  </div>
+</div>
+<div>
+  <label for="current-password">Current Password</label>
+  <input type="password" id="current-password" placeholder="********">
+</div>
+<div>
+  <label for="new-password">New Password</label>
+  <input type="password" id="new-password" placeholder="">
+</div>
+<div>
+  <label for="confirm-password">Confirm New Password</label>
+  <input type="password" id="confirm-password" placeholder="">
+</div>
+<button class="btn btn-primary" id="savechanges-button">Save Changes</button>
+<button class="btn btn-primary" id="logout-button">Logout</button>
+
+<script>
+ 
+  // Add event listener for the Save Changes button
+  $('#savechanges-button').click(function(event) {
+      event.preventDefault(); // Prevent default link behavior
+      loadContent('volunteerlogin'); // Load volunteerlogin.html
+  });
+  // Add event listener for the Logout button
+  $('#logout-button').click(function(event) {
+      event.preventDefault(); // Prevent default link behavior
+      loadContent('home'); // Load volunteerlogin.html
+  });
+
+</script>

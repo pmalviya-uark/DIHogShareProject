@@ -1,0 +1,80 @@
+<!-- templates/profileSettings.html -->
+<h1 class="title">Account Information</h1>
+<link  rel="stylesheet" href="./styles/accountstyle.css">
+<div style="display: flex; align-items: center; margin-bottom: 10px;">
+  <img src="/icons/profile.png" alt="Profile Icon" class="profile-icon" style="width: 100px; height: 100px;">
+  <div>
+    <p class="subtitle-volunteer">John Doe</p>
+    <p class="subtitle-text">john.doe@uark.edu</p>
+  </div>
+</div>
+<div class="profile-links">
+  <a href="#" id="my-account-link">
+    <img src="/icons/arrow.png" alt="Arrow Icon" width="20" height="20"> My Account
+  </a>
+  <p>
+    <img src="/icons/arrow.png" alt="Arrow Icon" width="20" height="20"> Display Settings
+  </p>
+  <p>
+    <img src="/icons/arrow.png" alt="Arrow Icon" width="20" height="20"> Notifications
+  </p>
+  <p>
+    <img src="/icons/arrow.png" alt="Arrow Icon" width="20" height="20"> Language
+  </p>
+  <p>
+    <img src="/icons/arrow.png" alt="Arrow Icon" width="20" height="20"> Privacy & Security
+  </p>
+  <p>
+    <img src="/icons/arrow.png" alt="Arrow Icon" width="20" height="20"> Help Center
+  </p>
+  <a href="#" id="logout-accountbutton">
+    <img src="/icons/arrow.png" alt="Arrow Icon" width="20" height="20"> Logout
+  </a>
+</div>
+
+<script>
+      // Add event listener for the My Account link
+  
+      $(document).ready(function() {
+      const loggedIn = localStorage.getItem('loggedIn');
+      if (loggedIn === 'true') {
+          // User is logged in, proceed to show account details
+          // You might want to fetch account details here
+          // ... 
+      } else {
+          // User is not logged in, show a modal
+          $(`
+              <div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-labelledby="loginRequiredModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="loginRequiredModalLabel">Login Required</h5>
+                              
+                          </div>
+                          <div class="modal-body">
+                              You need to be logged in as a volunteer to view this page. Please log in or sign up.
+                          </div>
+                          <div class="modal-footer">
+                  
+                              <button type="button" class="btn btn-primary" onclick="loadContent('volunteerlogin')">Login</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          `).appendTo('body'); // Append the modal to the body
+          $('#loginRequiredModal').modal('show'); // Show the modal
+      }
+  });
+
+      $('#my-account-link').click(function(event) {
+          event.preventDefault(); // Prevent default link behavior
+          loadContent('profilesettings'); // Load myaccount.html
+      });
+
+      // Add event listener for the Logout link
+      $('#logout-accountbutton').click(function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            //localStorage.setItem('loggedIn', false); // Simulate logout by clearing flag
+            loadContent('home'); // Load home.html
+        });
+</script>

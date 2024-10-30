@@ -1,0 +1,80 @@
+<!-- templates/volunteerLogin.html -->
+<h1 class="title">Volunteer Login</h1>
+<div style="display: flex; align-items: center; margin-bottom: 10px;">
+  <img src="/icons/profile.png" alt="Profile Icon" class="profile-icon" style="width: 100px; height: 100px;">
+  <div>
+    <h2 class="subtitle-volunteer">Welcome Volunteer</h2>
+    <p class="subtitle-text">Join us in making a difference</p>
+  </div>
+</div>
+
+<form id="volunteerlogin-form">
+  <div class="form-group">
+    <label for="email-input">Email</label>
+    <input type="text" class="form-control" id="email-input" placeholder="Enter your email address" required>
+  </div>
+  <div class="form-group">
+    <label for="password-input">Password</label>
+    <input type="password" class="form-control" id="password-input" placeholder="Enter your password" required>
+  </div>
+
+  <button type="submit" class="btn btn-primary" id="login-button">Login</button>
+  <button type="button" class="btn btn-primary" id="signup-button">Sign Up</button>
+  <button type="button" class="btn btn-primary" id="forgot-password">Forgot Password?</button>
+</form>
+
+<script>
+ 
+  $('#login-button').click(function(event) {
+    event.preventDefault();
+    console.log('login');
+
+    // Get user input values
+    const email = $('#email-input').val();
+    const password = $('#password-input').val();
+
+    // Check if user exists in IndexedDB
+    const request = window.indexedDB.open('volunteerDB', 1);
+
+    request.onerror = function(event) {
+      console.error('Error opening database:', event);
+      alert('Error accessing database.');
+    };
+
+    request.onsuccess = function(event) {
+      const db = event.target.result;
+      const transaction = db.transaction('users', 'readonly');
+      const store = transaction.objectStore('users');
+      const getUserRequest = store.get(email);
+
+      getUserRequest.onsuccess = function(event) {
+        const user = getUserRequest.result;
+        
+        if (user && user.password === password) {
+          console.log('Login successful!');
+          localStorage.setItem('loggedIn', true);
+          sessionStorage.setItem('loggedInUser', user.firstName);
+          loadContent('volunteerdashboard');
+        } else {
+          alert('Invalid email or password.');
+        }
+      };
+
+      getUserRequest.onerror = function(event) {
+        console.error('Error retrieving user:', event);
+        alert('Error checking user details.');
+      };
+    };
+  });
+
+  $('#signup-button').click(function(event) {
+    event.preventDefault();
+    loadContent('volunteersignup');
+  });
+
+  $('#forgot-password').click(function(event) {
+    event.preventDefault();
+    loadContent('profilesettings');
+  });
+
+</script>

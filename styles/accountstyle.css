@@ -1,0 +1,26 @@
+.profile-links a, .profile-links p {
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    color: #333;
+  }
+  /* Link and Button Styling */
+a, p {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #007bff;
+    text-decoration: none;
+    margin-bottom: 15px;
+    transition: color 0.3s;
+  }
+  
+  a:hover, p:hover {
+    color: #0056b3;
+  }
+  
+  a img, p img {
+    margin-right: 10px;
+  }

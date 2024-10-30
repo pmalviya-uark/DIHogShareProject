@@ -1,0 +1,77 @@
+<!-- templates/viewrequestdetails.html -->
+<h1 class="title">Request Details</h1>
+
+<div class="summary-item">
+  <img src="/icons/event.png" alt="Event Icon">
+  <div>
+      <h3>Event Name</h3>
+      <p id="event-name">Loading...</p>
+  </div>
+</div>
+
+<div class="summary-item">
+  <img src="/icons/requesttype.png" alt="Request Type Icon">
+  <div>
+      <h3>Request Type</h3>
+      <p id="request-type">Loading...</p>
+  </div>
+</div>
+
+<div class="summary-item">
+  <img src="/icons/location.png" alt="Location Icon">
+  <div>
+      <h3>Location</h3>
+      <p id="location">Loading...</p>
+  </div>
+</div>
+
+<div class="summary-item">
+  <img src="path/to/your/map.png" alt="Map" style="width: 100%; height: auto;">
+</div>
+
+<div class="summary-item">
+  <img src="/icons/food.png" alt="Food Type Icon">
+  <div>
+      <h3>Food</h3>
+      <p id="food">Loading...</p>
+  </div>
+</div>
+
+<div class="summary-item">
+  <img src="/icons/quantity.png" alt="Quantity Icon">
+  <div>
+      <h3>Quantity</h3>
+      <p id="quantity">Loading...</p>
+  </div>
+</div>
+
+<div class="summary-item">
+  <img src="/icons/quantity.png" alt="Notes Icon">
+  <div>
+      <h3>Notes</h3>
+      <p id="notes">Loading...</p>
+  </div>
+</div>
+<button class="btn btn-primary" id="accepted-requests-button">Return to Accepted Requests</button> 
+<script>
+    
+     if (localStorage.getItem('latestRequest')) { // Check if latestRequest exists
+        // Populate the page with request details
+        const latestRequest = JSON.parse(localStorage.getItem('latestRequest')); 
+        $('#event-name').text(latestRequest.eventName);
+        $('#request-type').text(latestRequest.requestType);
+        $('#location').text(latestRequest.location);
+        $('#food').text(latestRequest.food);
+        $('#quantity').text(latestRequest.quantity + ' lbs');
+        $('#notes').text(latestRequest.notes);
+
+        // ... other code ...
+    } else {
+        console.error('No valid request details found. Please select a request.');
+        alert('No valid request details found. Please select a request.');
+    }
+    $('#accepted-requests-button').click(function(event) {
+    event.preventDefault();
+    loadContent('acceptedrequest');
+  });
+</script>

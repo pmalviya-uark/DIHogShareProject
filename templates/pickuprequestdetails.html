@@ -1,0 +1,132 @@
+<!-- templates/pickuprequestdetails.html -->
+<h1 class="title">Request Details</h1>
+
+<div class="summary-item">
+  <img src="/icons/event.png" alt="Event Icon">
+  <div>
+      <h3>Event Name</h3>
+      <p id="event-name">Loading...</p>
+  </div>
+</div>
+
+<div class="summary-item">
+  <img src="/icons/requesttype.png" alt="Request Type Icon">
+  <div>
+      <h3>Request Type</h3>
+      <p id="request-type">Loading...</p>
+  </div>
+</div>
+
+<div class="summary-item">
+  <img src="/icons/location.png" alt="Location Icon">
+  <div>
+      <h3>Location</h3>
+      <p id="location">Loading...</p>
+  </div>
+</div>
+
+<div class="summary-item">
+  <img src="path/to/your/map.png" alt="Map" style="width: 100%; height: auto;">
+</div>
+
+<div class="summary-item">
+  <img src="/icons/food.png" alt="Food Type Icon">
+  <div>
+      <h3>Food</h3>
+      <p id="food">Loading...</p>
+  </div>
+</div>
+
+<div class="summary-item">
+  <img src="/icons/quantity.png" alt="Quantity Icon">
+  <div>
+      <h3>Quantity</h3>
+      <p id="quantity">Loading...</p>
+  </div>
+</div>
+
+<div class="summary-item">
+  <img src="/icons/quantity.png" alt="Notes Icon">
+  <div>
+      <h3>Notes</h3>
+      <p id="notes">Loading...</p>
+  </div>
+</div>
+
+<button class="btn btn-primary" id="accept-request-button">Accept Request</button>
+
+<script>
+    
+     if (localStorage.getItem('latestRequest')) { // Check if latestRequest exists
+        // Populate the page with request details
+        const latestRequest = JSON.parse(localStorage.getItem('latestRequest')); 
+        $('#event-name').text(latestRequest.eventName);
+        $('#request-type').text(latestRequest.requestType);
+        $('#location').text(latestRequest.location);
+        $('#food').text(latestRequest.food);
+        $('#quantity').text(latestRequest.quantity + ' lbs');
+        $('#notes').text(latestRequest.notes);
+
+        // ... other code ...
+    } else {
+        console.error('No valid request details found. Please select a request.');
+        alert('No valid request details found. Please select a request.');
+    }
+
+function generateRequestNumber() {
+    return Math.floor(100000 + Math.random() * 900000); // Generate a random 6-digit number
+}
+
+function saveAcceptedRequest(requestNumber, requestDetails) {
+    const dbRequest = window.indexedDB.open('acceptedRequestsDB', 1);
+
+    dbRequest.onupgradeneeded = function(event) {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains('requests')) {
+            db.createObjectStore('requests', { keyPath: 'requestNumber' });
+        }
+    };
+
+    dbRequest.onsuccess = function(event) {
+        const db = event.target.result;
+        const transaction = db.transaction('requests', 'readwrite');
+        const store = transaction.objectStore('requests');
+
+        const newAcceptedRequest = {
+            requestNumber: requestNumber,
+            eventName: requestDetails.eventName,
+            requestType: requestDetails.requestType,
+            location: requestDetails.location,
+            food: requestDetails.food,
+            quantity: requestDetails.quantity,
+            notes: requestDetails.notes
+        };
+
+        store.add(newAcceptedRequest);
+
+        transaction.oncomplete = function() {
+            console.log('Request accepted and saved successfully.');
+            alert(`Request accepted! Request Number: ${requestNumber}`);
+            loadContent('acceptedrequest');
+        };
+
+        transaction.onerror = function(event) {
+            console.error('Error saving accepted request:', event);
+        };
+    };
+
+    dbRequest.onerror = function(event) {
+        console.error('Error opening acceptedRequestsDB:', event);
+    };
+}
+// Event listener for the "Accept Request" button
+$('#accept-request-button').click(function() {
+    if (localStorage.getItem('latestRequest')) {
+        const latestRequest = JSON.parse(localStorage.getItem('latestRequest'));
+        const requestNumber = generateRequestNumber(); 
+        saveAcceptedRequest(requestNumber, latestRequest); 
+    } else {
+        alert('No valid request details found. Please select a request.');
+    }
+});
+</script>
